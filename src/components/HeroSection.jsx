@@ -16,16 +16,15 @@ export const HeroSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-10">
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
-            Unlock the{" "}
+            Commercial Warehouse{" "}
             <span className="bg-gradient-to-r from-primary via-gold-light to-primary bg-clip-text text-transparent animate-glow">
-              Ultimate Power
+              Storage Solutions
             </span>{" "}
-            of Storage in Your Life
+            for Growing Businesses
           </h1>
 
           <p className="text-xl sm:text-2xl text-muted-foreground max-w-2xl mx-auto">
-            We empower businesses and individuals with intelligent, scalable storage
-            solutions that solve real-world problems. From strategy to execution.
+            Flexible, scalable warehouse space from 500 to 5,000 sq ft. Perfect for SMEs, contractors, e-commerce, and industrial operations.
           </p>
 
           {/* Buttons */}
@@ -51,20 +50,20 @@ export const HeroSection = () => {
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-16">
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-primary">500+</div>
-              <div className="text-sm text-muted-foreground">Happy Clients</div>
+              <div className="text-4xl font-bold text-primary">AED 9</div>
+              <div className="text-sm text-muted-foreground">Per Sq Ft Base Rate</div>
+            </div>
+            <div className="space-y-2">
+              <div className="text-4xl font-bold text-primary">500-5K</div>
+              <div className="text-sm text-muted-foreground">Sq Ft Units Available</div>
             </div>
             <div className="space-y-2">
               <div className="text-4xl font-bold text-primary">24/7</div>
-              <div className="text-sm text-muted-foreground">Security</div>
+              <div className="text-sm text-muted-foreground">Secure Access</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-primary">100%</div>
-              <div className="text-sm text-muted-foreground">Climate Control</div>
-            </div>
-            <div className="space-y-2">
-              <div className="text-4xl font-bold text-primary">48h</div>
-              <div className="text-sm text-muted-foreground">Quick Access</div>
+              <div className="text-4xl font-bold text-primary">Flexible</div>
+              <div className="text-sm text-muted-foreground">Lease Terms</div>
             </div>
           </div>
         </div>

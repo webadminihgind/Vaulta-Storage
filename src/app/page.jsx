@@ -1,24 +1,26 @@
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
 import { StorageOptions } from "@/components/StorageOptions";
-import { ComprehensiveSolutions } from "@/components/ComprehensiveSolutions";
 import { Testimonials } from "@/components/Testimonials";
-import { SizeCalculator } from "@/components/SizeCalculator";
 import { FAQ } from "@/components/FAQ";
+import { LocationMap } from "@/components/LocationMap";
 import { Footer } from "@/components/Footer";
+import SmoothScrollWrapper from "@/components/SmoothScrollWrapper";
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <main>
-        <HeroSection />
-        <StorageOptions />
-        <ComprehensiveSolutions />
-        <Testimonials />
-        <SizeCalculator />
-        <FAQ />
-      </main>
-
-    </div>
+    <>
+      <Header />
+      <SmoothScrollWrapper>
+        <main className="pt-16">
+          <HeroSection />
+          <StorageOptions />
+          <Testimonials />
+          <FAQ />
+        </main>
+        <LocationMap />
+        <Footer />
+      </SmoothScrollWrapper>
+    </>
   );
 }
