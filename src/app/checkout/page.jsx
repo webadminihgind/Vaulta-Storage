@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { CreditCard, Lock, CheckCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
