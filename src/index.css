@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* === Custom Design System: Neon Green (#BFF747) + Dark Theme === */
+@layer base {
+  :root {
+    /* === Base Colors === */
+    --background: 210 25% 5%;
+    --foreground: 0 0% 98%;
+
+    --card: 210 25% 8%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 210 25% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --secondary: 210 20% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 210 15% 20%;
+    --muted-foreground: 0 0% 65%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 210 20% 18%;
+    --input: 210 20% 15%;
+
+    --radius: 0.75rem;
+
+    /* === Primary Theme Color (#BFF747) === */
+    --primary: 74 91% 63%;
+    --primary-foreground: 210 25% 5%;
+
+    --accent: 74 91% 63%;
+    --accent-foreground: 210 25% 5%;
+
+    --green: 74 91% 63%;
+    --green-dark: 74 80% 50%;
+    --green-light: 74 91% 75%;
+
+    --ring: 74 91% 63%;
+
+    --dark-bg: 210 25% 5%;
+    --dark-surface: 210 20% 10%;
+    --dark-elevated: 210 18% 15%;
+
+    /* === Gradients === */
+    --gradient-primary: linear-gradient(135deg, #BFF747 0%, #BFF747 100%);
+    --gradient-accent: linear-gradient(135deg, #BFF747 0%, #BFF747 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(210 25% 10%), hsl(210 25% 5%));
+    --gradient-animated: linear-gradient(135deg, #BFF747, #BFF747);
+
+    /* === Shadows === */
+    --shadow-glow: 0 0 40px #BFF74766;
+    --shadow-card: 0 10px 40px hsl(0 0% 0% / 0.5);
+    --shadow-green: 0 0 60px #BFF7474D;
+
+    /* === Transition === */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* === Background Animation === */
+  @keyframes gradient-move {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .animated-gradient {
+    background: linear-gradient(
+      270deg,
+      hsl(210 25% 10%),
+      hsl(210 20% 8%),
+      hsl(210 25% 5%)
+    );
+    background-size: 400% 400%;
+    animation: gradient-move 15s ease infinite;
+  }
+}
+
+/* === Custom Utilities for CSS Variables === */
+@layer utilities {
+  .border-border {
+    border-color: hsl(var(--border));
+  }
+
+  .bg-background {
+    background-color: hsl(var(--background));
+  }
+
+  .text-foreground {
+    color: hsl(var(--foreground));
+  }
+
+  .bg-card {
+    background-color: hsl(var(--card));
+  }
+
+  .text-card-foreground {
+    color: hsl(var(--card-foreground));
+  }
+}
+
+/* === Apply Global Styles === */
+body {
+  font-family: sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  transition: var(--transition-smooth);
+}
+
+.card {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem;
+  transition: var(--transition-smooth);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-green);
+}
+
+/* === Borders with Glow === */
+.border-glow {
+  box-shadow: var(--shadow-glow);
+  border-color: #BFF747;
+}
+
+/* === Buttons === */
+.btn-primary {
+  background-color: #BFF747;
+  color: hsl(var(--primary-foreground));
+  transition: var(--transition-smooth);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-outline {
+  border: 2px solid #BFF747;
+  color: hsl(var(--foreground));
+  transition: var(--transition-smooth);
+}
+
+.btn-outline:hover {
+  background-color: rgba(191, 247, 71, 0.1);
+}
+
+/* === Text Gradients === */
+.text-gradient-primary,
+.text-gradient-accent {
+  background: #BFF747;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
