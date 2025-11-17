@@ -8,42 +8,53 @@ import { useTheme } from "next-themes";
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, systemTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // useEffect only runs on the client, so now we can safely show the UI
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-[1000] bg-background/90 backdrop-blur-lg border-b border-border shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-[1000] bg-background/95 backdrop-blur-lg border-b border-border shadow-md">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <img
-              src="/assets/vaultalogo.webp"
-              alt="Vaulta Storage Logo"
-              sizes="(max-width: 640px) 100vw, 48px"
-              className="h-16 w-auto"
+          {/* Logo & Navigation - Left Side */}
+          <div className="flex items-center gap-8">
+            {/* Logo */}
+            <Link href="/" className="flex items-center">
+              <img
+                src="/assets/vaultalogo.webp"
+                alt="Vaulta Storage Logo"
+                sizes="(max-width: 640px) 100vw, 48px"
+                className="h-16 w-auto"
+
+              />
+            </Link>
+
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-6">
               
-            />
-          </Link>
+              <Link
+                href="/about"
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                About Us
+              </Link>
+              
+              <Link
+                href="/contact"
+                className="text-foreground hover:text-primary transition-colors"
+              >
+                Contact Us
+              </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link
-              href="/contact"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              Contact Us
-            </Link>
+            </nav>
+          </div>
 
-            <Link
-              href="/about"
-              className="text-foreground hover:text-primary transition-colors"
-            >
-              About Us
-            </Link>
-          </nav>
-
-          {/* Desktop Social Icons & Theme Toggle */}
+          {/* Desktop Social Icons & Theme Toggle - Right Side */}
           <div className="hidden md:flex items-center space-x-4">
             <a
               href="https://instagram.com/yourprofile"
@@ -54,16 +65,16 @@ export const Header = () => {
               <Instagram className="w-5 h-5" />
             </a>
 
-            <a href="tel:+123456789" className="text-foreground hover:text-primary transition-colors">
+            <a href="tel:+97142585754" className="text-foreground hover:text-primary transition-colors">
               <Phone className="w-5 h-5" />
             </a>
 
-            <a href="mailto:info@example.com" className="text-foreground hover:text-primary transition-colors">
+            <a href="mailto:info@vaultastorage.com" className="text-foreground hover:text-primary transition-colors">
               <Mail className="w-5 h-5" />
             </a>
 
             <a
-              href="https://wa.me/123456789"
+              href="https://wa.me/97142585754"
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground hover:text-primary transition-colors"
@@ -72,17 +83,19 @@ export const Header = () => {
             </a>
 
             {/* Theme Toggle Button */}
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/30"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? (
-                <Sun className="w-5 h-5 text-primary" />
-              ) : (
-                <Moon className="w-5 h-5 text-primary" />
-              )}
-            </button>
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/30"
+                aria-label="Toggle theme"
+              >
+                {theme === "dark" ? (
+                  <Sun className="w-5 h-5 text-primary" />
+                ) : (
+                  <Moon className="w-5 h-5 text-primary" />
+                )}
+              </button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -120,31 +133,33 @@ export const Header = () => {
                     <Instagram className="w-5 h-5 text-foreground hover:text-primary" />
                   </a>
 
-                  <a href="tel:+123456789">
+                  <a href="tel:+97142585754">
                     <Phone className="w-5 h-5 text-foreground hover:text-primary" />
                   </a>
 
-                  <a href="mailto:info@example.com">
+                  <a href="mailto:info@vaultastorage.com">
                     <Mail className="w-5 h-5 text-foreground hover:text-primary" />
                   </a>
 
-                  <a href="https://wa.me/123456789" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/97142585754" target="_blank" rel="noopener noreferrer">
                     <FaWhatsapp className="w-5 h-5 text-foreground hover:text-primary" />
                   </a>
                 </div>
 
                 {/* Mobile Theme Toggle */}
-                <button
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/30"
-                  aria-label="Toggle theme"
-                >
-                  {theme === "dark" ? (
-                    <Sun className="w-5 h-5 text-primary" />
-                  ) : (
-                    <Moon className="w-5 h-5 text-primary" />
-                  )}
-                </button>
+                {mounted && (
+                  <button
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    className="p-2 rounded-lg bg-primary/10 hover:bg-primary/20 transition-colors border border-primary/30"
+                    aria-label="Toggle theme"
+                  >
+                    {theme === "dark" ? (
+                      <Sun className="w-5 h-5 text-primary" />
+                    ) : (
+                      <Moon className="w-5 h-5 text-primary" />
+                    )}
+                  </button>
+                )}
               </div>
             </div>
           </div>

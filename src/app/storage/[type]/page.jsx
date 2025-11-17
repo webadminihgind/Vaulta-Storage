@@ -33,7 +33,7 @@ export default function StorageTypePage() {
     <div className="min-h-screen bg-background animated-gradient">
       <main>
         {/* Hero Section */}
-        <section className="py-24 relative overflow-hidden">
+        {/* <section className="py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-transparent" />
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
@@ -52,10 +52,10 @@ export default function StorageTypePage() {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Type-specific component */}
-        {StorageComponent && <StorageComponent />}
+        {/* {StorageComponent && <StorageComponent />} */}
 
         {/* Storage Options */}
         <StorageOptions />

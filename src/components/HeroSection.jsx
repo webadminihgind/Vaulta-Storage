@@ -1,19 +1,21 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 export const HeroSection = () => {
   const router = useRouter();
+  const [navigating, setNavigating] = useState(null);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden ">
 
 
 
       {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mt-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 ">
         <div className="max-w-4xl mx-auto text-center space-y-8 animate-fade-in">
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight">
             Commercial Warehouse{" "}
@@ -32,18 +34,40 @@ export const HeroSection = () => {
             <Button
               size="lg"
               className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-6 shadow-[0_0_30px_rgba(234,179,8,0.3)] hover:shadow-[0_0_50px_rgba(234,179,8,0.5)] transition-all"
-              onClick={() => router.push("/contact")}
+              onClick={() => {
+                setNavigating("contact");
+                router.push("/contact");
+              }}
+              disabled={navigating === "contact"}
             >
-              Get Started Today
+              {navigating === "contact" ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Get Started Today"
+              )}
             </Button>
 
             <Button
               size="lg"
               variant="outline"
               className="border-primary text-foreground hover:bg-primary/10 text-lg px-8 py-6"
-              onClick={() => router.push("/storage/everyday")}
+              onClick={() => {
+                setNavigating("storage");
+                router.push("/storage/everyday");
+              }}
+              disabled={navigating === "storage"}
             >
-              Explore Options
+              {navigating === "storage" ? (
+                <>
+                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Explore Options"
+              )}
             </Button>
           </div>
 

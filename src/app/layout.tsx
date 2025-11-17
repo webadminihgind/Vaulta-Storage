@@ -7,15 +7,18 @@ import RootClient from "./RootClient";
 export const metadata = {
   title: "Vaulta Storage",
   description: "Intelligent and scalable storage solutions",
-  icons: {
-    icon: "/vaultalogo.webp",
-  },
+  icons: [
+    {
+      rel: 'icon',
+      url: '/favicon.ico',
+    },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-background text-foreground">
+    <html lang="en" suppressHydrationWarning>
+      <body className="bg-background text-foreground" suppressHydrationWarning>
         <RootClient>
           {children}
         </RootClient>

@@ -3,11 +3,18 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { useRouter } from "next/navigation"; // Next.js router
+import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 export const StorageCard = ({ size, price, dimensions, features, isPopular = false, image, pricePerSqFt, premiumPrice, useCase }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const router = useRouter();
+
+  const handleBookNow = () => {
+    setIsNavigating(true);
+    router.push(`/booking?size=${encodeURIComponent(size)}&price=${encodeURIComponent(price)}&dimensions=${encodeURIComponent(dimensions)}`);
+  };
 
   return (
     <Card
@@ -82,11 +89,17 @@ export const StorageCard = ({ size, price, dimensions, features, isPopular = fal
           <Button
             className="w-full bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90 hover:scale-105 active:scale-95 transition-all duration-200"
             size="lg"
-            onClick={() =>
-              router.push(`/booking?size=${encodeURIComponent(size)}&price=${encodeURIComponent(price)}&dimensions=${encodeURIComponent(dimensions)}`)
-            }
+            onClick={handleBookNow}
+            disabled={isNavigating}
           >
-            BOOK NOW
+            {isNavigating ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "BOOK NOW"
+            )}
           </Button>
         </div>
       </div>

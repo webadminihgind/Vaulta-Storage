@@ -288,3 +288,108 @@ main {
   .bg-card { background-color: hsl(var(--card)); }
   .text-card-foreground { color: hsl(var(--card-foreground)); }
 }
+
+/* === Hide Stripe Development Warning Overlay === */
+/* This warning only appears in development and won't show in production over HTTPS */
+.__PrivateStripeElement-alertContainer {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+/* Hide Stripe alert/warning dialog but NOT the payment iframe */
+body > div[role="alert"][style*="position: fixed"] {
+  display: none !important;
+}
+
+/* Ensure Stripe Payment Element displays correctly */
+.stripe-payment-element {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure Stripe iframes are visible */
+.__PrivateStripeElement,
+.__PrivateStripeElement iframe {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Fix for Stripe Element container */
+.StripeElement {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Stripe Payment Element container styling */
+.stripe-payment-element-container {
+  min-height: 200px;
+  background: white !important;
+}
+
+.dark .stripe-payment-element-container {
+  background: hsl(var(--card)) !important;
+}
+
+/* Ensure Stripe Element iframes have proper background */
+#payment-element iframe {
+  background: transparent !important;
+}
+
+/* WhatsApp widget should be above everything except true modals */
+.whatsapp-widget-button {
+  z-index: 99999 !important;
+}
+
+.whatsapp-widget-popup {
+  z-index: 99998 !important;
+}
+
+/* === Print Styles for Invoice === */
+@media print {
+  /* Hide everything except invoice */
+  body * {
+    visibility: hidden;
+  }
+
+  #invoice-content,
+  #invoice-content * {
+    visibility: visible;
+  }
+
+  #invoice-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  /* Hide elements not needed in print */
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Remove backgrounds and shadows for print */
+  .animated-gradient,
+  .animated-gradient::before,
+  .animated-gradient::after {
+    background: white !important;
+    animation: none !important;
+  }
+
+  /* Ensure proper page breaks */
+  .invoice-page-break {
+    page-break-inside: avoid;
+  }
+
+  /* Print-friendly colors */
+  .print\:bg-primary {
+    background-color: #7fb539 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

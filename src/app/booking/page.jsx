@@ -6,12 +6,13 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/Checkbox";
-import { Calendar, MapPin, User, Mail, Phone, CreditCard, Plus, Package } from "lucide-react";
+import { Calendar, MapPin, User, Mail, Phone, CreditCard, Plus, Package, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 const Booking = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Retrieve order info from URL query
   const size = searchParams.get("size") || "Not Selected";
@@ -95,7 +96,7 @@ const Booking = () => {
     });
   };
 
-  const handleProceedToCheckout = (e) => {
+  const handleProceedToCheckout = async (e) => {
     e.preventDefault();
 
     if (!formData.name || !formData.email || !formData.phone || !formData.moveInDate) {
@@ -107,17 +108,64 @@ const Booking = () => {
       return;
     }
 
-    // Pass form + order info + add-ons via query params to Checkout page
-    const queryParams = new URLSearchParams({
-      size,
-      price,
-      dimensions,
-      totalPrice: totalPrice.toString(),
-      addOns: JSON.stringify(addOns),
-      ...formData,
-    }).toString();
+    setIsProcessing(true);
 
-    router.push(`/checkout?${queryParams}`);
+    try {
+      // Create booking via API
+      const response = await fetch('/api/booking/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer: {
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            companyName: formData.companyName,
+            address: formData.address,
+          },
+          booking: {
+            size: size,
+            dimensions: dimensions,
+            basePrice: basePrice,
+            moveInDate: formData.moveInDate,
+            addOns: addOns,
+            totalPrice: totalPrice,
+          },
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create booking');
+      }
+
+      toast({
+        title: "Booking Created!",
+        description: "Redirecting to checkout...",
+      });
+
+      // Pass booking data to checkout page
+      const queryParams = new URLSearchParams({
+        bookingId: data.booking.id,
+        size,
+        price,
+        dimensions,
+        totalPrice: totalPrice.toString(),
+        addOns: JSON.stringify(addOns),
+        ...formData,
+      }).toString();
+
+      router.push(`/checkout?${queryParams}`);
+    } catch (error) {
+      console.error('Error creating booking:', error);
+      toast({
+        title: "Booking Failed",
+        description: error.message || "Failed to create booking. Please try again.",
+        variant: "destructive",
+      });
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -186,7 +234,7 @@ const Booking = () => {
                         type="tel"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="+971 52 117 9039"
+                        placeholder="+971 4 258 5754"
                         required
                       />
                     </div>
@@ -470,8 +518,19 @@ const Booking = () => {
                     type="submit"
                     className="w-full bg-gradient-to-r from-primary to-accent hover:opacity-90 text-lg py-6"
                     size="lg"
+                    disabled={isProcessing}
                   >
-                    <CreditCard className="w-5 h-5 mr-2" /> Proceed to Checkout
+                    {isProcessing ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        <CreditCard className="w-5 h-5 mr-2" />
+                        Proceed to Checkout
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

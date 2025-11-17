@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import LocomotiveScroll from "locomotive-scroll";
 import "locomotive-scroll/dist/locomotive-scroll.css";
 
 const SmoothScrollWrapper = ({ children }) => {
@@ -11,14 +10,16 @@ const SmoothScrollWrapper = ({ children }) => {
 
   useEffect(() => {
     // Small delay to allow page transition to complete
-    const initTimeout = setTimeout(() => {
+    const initTimeout = setTimeout(async () => {
       // Destroy previous instance if exists
       if (scrollInstance.current) {
         scrollInstance.current.destroy();
       }
 
-      // Initialize Locomotive Scroll
-      if (scrollRef.current) {
+      // Dynamically import Locomotive Scroll only on client
+      if (scrollRef.current && typeof window !== 'undefined') {
+        const LocomotiveScroll = (await import("locomotive-scroll")).default;
+
         scrollInstance.current = new LocomotiveScroll({
           el: scrollRef.current,
           smooth: true,
@@ -34,11 +35,19 @@ const SmoothScrollWrapper = ({ children }) => {
           },
         });
 
+        // Expose instance globally for manual updates
+        window.locomotive = scrollInstance.current;
+
         // Scroll to top on route change
         scrollInstance.current.scrollTo(0, {
           duration: 0,
           disableLerp: true,
         });
+
+        // Update scroll after content loads
+        setTimeout(() => {
+          scrollInstance.current.update();
+        }, 500);
       }
     }, 100);
 
@@ -48,15 +57,19 @@ const SmoothScrollWrapper = ({ children }) => {
         scrollInstance.current.update();
       }
     };
-    
-    window.addEventListener("resize", handleResize);
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener("resize", handleResize);
+    }
 
     return () => {
       clearTimeout(initTimeout);
       if (scrollInstance.current) {
         scrollInstance.current.destroy();
       }
-      window.removeEventListener("resize", handleResize);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener("resize", handleResize);
+      }
     };
   }, [pathname]);
 

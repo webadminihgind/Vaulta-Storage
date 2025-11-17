@@ -11,13 +11,22 @@ import CustomCursor from "@/components/CustomCursor";
 import PageTransition from "@/components/PageTransition";
 import NavigationProgress from "@/components/NavigationProgress";
 import BackgroundAnimation from "@/components/BackgroundAnimation";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
+import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 const queryClient = new QueryClient();
 
 export default function RootClient({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="dark"
+        enableSystem={false}
+        disableTransitionOnChange
+      >
         <TooltipProvider>
           {/* Notifications */}
           <Toaster />
@@ -31,9 +40,25 @@ export default function RootClient({ children }) {
 
           {/* UI enhancements */}
           <CustomCursor />
-          <PageTransition>
-            {children}
-          </PageTransition>
+
+          {/* Fixed Elements (Outside scroll wrapper) */}
+          <Header />
+          <ScrollToTop />
+          <WhatsAppWidget />
+
+          <SmoothScrollWrapper>
+            {/* Page Content with Transition */}
+            <main className="pt-16" data-scroll-section>
+              <PageTransition>
+                {children}
+              </PageTransition>
+            </main>
+
+            {/* Global Footer */}
+            <div data-scroll-section>
+              <Footer />
+            </div>
+          </SmoothScrollWrapper>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

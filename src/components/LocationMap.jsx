@@ -19,7 +19,7 @@ export const LocationMap = () => {
         <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {/* Map Container */}
           <div className="rounded-xl overflow-hidden border-2 border-border shadow-lg h-[400px] lg:h-[500px]">
-            <iframe
+            {/* <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.4977050004985!2d55.27493731501204!3d25.276987183863587!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496ad9c645%3A0xbde66e5084295162!2sDubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1234567890123!5m2!1sen!2s&maptype=roadmap"
               width="100%"
               height="100%"
@@ -31,7 +31,16 @@ export const LocationMap = () => {
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="dark:invert dark:hue-rotate-180 dark:brightness-95 dark:contrast-90"
-            />
+            /> */}
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.281558389189!2d55.21688877537955!3d25.12617017775671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5c118d1148a7%3A0x43a6911c0ddcc3d7!2sMetroplus%20Advertising%20LLC!5e0!3m2!1sen!2sae!4v1763214656773!5m2!1sen!2sae"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
           </div>
 
           {/* Contact Information */}
@@ -44,8 +53,8 @@ export const LocationMap = () => {
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Address</h3>
                   <p className="text-muted-foreground">
-                    Vaulta Storage Facility<br />
-                    Sheikh Mohammed Bin Zayed Road<br />
+                    7 Al Sagi Street - Al Quoz<br />
+                    Al Quoz Industrial Area 3<br />
                     Dubai, United Arab Emirates
                   </p>
                 </div>
@@ -60,8 +69,8 @@ export const LocationMap = () => {
                 <div>
                   <h3 className="text-lg font-semibold mb-2">Phone</h3>
                   <p className="text-muted-foreground">
-                    <a href="tel:+971521179039" className="hover:text-primary transition-colors">
-                      +971 52 117 9039
+                    <a href="tel:+97142585754" className="hover:text-primary transition-colors">
+                      +971 4 258 5754
                     </a>
                   </p>
                   <p className="text-sm text-muted-foreground mt-1">
