@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/utils/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = createAdminClient();
@@ -20,10 +22,11 @@ export async function GET(request: NextRequest) {
       success: true,
       users,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching users:", error);
+    const message = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Failed to fetch users" },
+      { error: "Failed to fetch users", details: message },
       { status: 500 }
     );
   }

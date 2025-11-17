@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/utils/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = createAdminClient();
@@ -47,11 +49,16 @@ export async function GET(request: NextRequest) {
       bookings: bookings || [],
       count: bookings?.length || 0,
     });
-  } catch (error) {
-    console.error("Error fetching bookings:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch bookings", details: error.message },
-      { status: 500 }
-    );
-  }
+  } catch (error: unknown) {
+      console.error("Error fetching bookings:", error);
+
+      // Check if error is an instance of Error
+      const message = error instanceof Error ? error.message : String(error);
+
+      return NextResponse.json(
+        { error: "Failed to fetch bookings", details: message },
+        { status: 500 }
+      );
+    }
+
 }

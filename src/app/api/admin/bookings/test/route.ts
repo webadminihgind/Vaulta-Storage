@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/utils/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 // Debug endpoint to test bookings fetch
 export async function GET(request: NextRequest) {
   try {
@@ -58,11 +60,16 @@ export async function GET(request: NextRequest) {
         withRelations: bookingsWithRelations?.length || 0,
       }
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error in test:", error);
+
+    // Ensure TypeScript knows what 'message' is
+    const message = error instanceof Error ? error.message : String(error);
+
     return NextResponse.json(
-      { error: "Test failed", details: error.message },
+      { error: "Test failed", details: message },
       { status: 500 }
     );
   }
+
 }

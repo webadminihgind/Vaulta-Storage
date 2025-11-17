@@ -1,10 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { CheckCircle, Mail, Calendar, MapPin, Download } from "lucide-react";
+import { CheckCircle, Mail, Calendar, MapPin, Download, Loader2 } from "lucide-react";
 
-const Confirmation = () => {
+function ConfirmationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -95,6 +96,16 @@ const Confirmation = () => {
       </main>
     </div>
   );
-};
+}
 
-export default Confirmation;
+export default function Confirmation() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background animated-gradient flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    }>
+      <ConfirmationContent />
+    </Suspense>
+  );
+}

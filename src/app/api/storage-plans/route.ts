@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 // Public API to fetch active storage plans
 export async function GET(request: NextRequest) {
   try {
@@ -18,10 +20,11 @@ export async function GET(request: NextRequest) {
       success: true,
       storagePlans,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching storage plans:", error);
+    const message = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Failed to fetch storage plans" },
+      { error: "Failed to fetch storage plans", details: message },
       { status: 500 }
     );
   }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/Checkbox";
 import { Calendar, MapPin, User, Mail, Phone, CreditCard, Plus, Package, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
-const Booking = () => {
+function BookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -540,6 +540,16 @@ const Booking = () => {
       </main>
     </div>
   );
-};
+}
 
-export default Booking;
+export default function Booking() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background animated-gradient flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    }>
+      <BookingContent />
+    </Suspense>
+  );
+}

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/utils/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 // GET all storage options
 export async function GET(request: NextRequest) {
   try {
@@ -17,10 +19,11 @@ export async function GET(request: NextRequest) {
       success: true,
       storageOptions,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error fetching storage options:", error);
+    const message = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Failed to fetch storage options" },
+      { error: "Failed to fetch storage options", details: message },
       { status: 500 }
     );
   }
@@ -57,10 +60,11 @@ export async function POST(request: NextRequest) {
       success: true,
       storageOption: newOption,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error creating storage option:", error);
+    const message = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Failed to create storage option" },
+      { error: "Failed to create storage option", details: message },
       { status: 500 }
     );
   }
@@ -103,10 +107,11 @@ export async function PUT(request: NextRequest) {
       success: true,
       storageOption: updatedOption,
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error updating storage option:", error);
+    const message = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Failed to update storage option" },
+      { error: "Failed to update storage option", details: message },
       { status: 500 }
     );
   }
@@ -137,10 +142,11 @@ export async function DELETE(request: NextRequest) {
       success: true,
       message: "Storage option deleted successfully",
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error deleting storage option:", error);
+    const message = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "Failed to delete storage option" },
+      { error: "Failed to delete storage option", details: message },
       { status: 500 }
     );
   }

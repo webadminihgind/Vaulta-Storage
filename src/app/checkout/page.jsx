@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -11,7 +11,7 @@ import { Loader2 } from "lucide-react";
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-const Checkout = () => {
+function CheckoutContent() {
   const searchParams = useSearchParams();
 
   // Retrieve booking data from query params
@@ -243,6 +243,16 @@ const Checkout = () => {
       </div>
     </div>
   );
-};
+}
 
-export default Checkout;
+export default function Checkout() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background animated-gradient flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
+  );
+}

@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { CheckCircle2, Clock, Mail, Phone, MapPin, Calendar, Package, Download, ArrowLeft } from "lucide-react";
+import { CheckCircle2, Clock, Mail, Phone, MapPin, Calendar, Package, Download, ArrowLeft, Loader2 } from "lucide-react";
 
-const BookingConfirmation = () => {
+function BookingConfirmationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -311,6 +311,16 @@ const BookingConfirmation = () => {
       </main>
     </div>
   );
-};
+}
 
-export default BookingConfirmation;
+export default function BookingConfirmation() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background animated-gradient flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    }>
+      <BookingConfirmationContent />
+    </Suspense>
+  );
+}
