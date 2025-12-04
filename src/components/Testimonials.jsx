@@ -1,8 +1,12 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { Star } from "lucide-react";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggerGroup, StaggerItem } from "@/components/animations/StaggerGroup";
+import { fadeInUp, cardHover } from "@/lib/animations";
 
 export const Testimonials = () => {
   const testimonials = [
@@ -32,44 +36,47 @@ export const Testimonials = () => {
   return (
     <section className="py-24 bg-gradient-to-b from-background to-secondary/20">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            What Our{" "}
-            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Customers Say
-            </span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of satisfied customers who trust us with their storage needs
-          </p>
-        </div>
+        <ScrollReveal animation={fadeInUp}>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+              What Our{" "}
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                Customers Say
+              </span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Join thousands of satisfied customers who trust us with their storage needs
+            </p>
+          </div>
+        </ScrollReveal>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <StaggerGroup className="grid md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <Card
-              key={index}
-              className="p-6 bg-card border-2 border-border hover:border-primary/50 transition-all duration-300"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-bold">
-                  {testimonial.image}
-                </div>
-                <div>
-                  <div className="font-semibold">{testimonial.name}</div>
-                  <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                </div>
-              </div>
+            <StaggerItem key={index}>
+              <motion.div whileHover={cardHover}>
+                <Card className="p-6 bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 h-full">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-bold">
+                      {testimonial.image}
+                    </div>
+                    <div>
+                      <div className="font-semibold">{testimonial.name}</div>
+                      <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                    </div>
+                  </div>
 
-              <div className="flex gap-1 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-primary text-primary" />
-                ))}
-              </div>
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    ))}
+                  </div>
 
-              <p className="text-muted-foreground">{testimonial.text}</p>
-            </Card>
+                  <p className="text-muted-foreground">{testimonial.text}</p>
+                </Card>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

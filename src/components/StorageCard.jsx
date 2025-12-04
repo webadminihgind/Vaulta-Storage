@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
+import { cardHover } from "@/lib/animations";
 
 export const StorageCard = ({ size, price, dimensions, features, isPopular = false, image, pricePerSqFt, premiumPrice, useCase }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -17,15 +19,18 @@ export const StorageCard = ({ size, price, dimensions, features, isPopular = fal
   };
 
   return (
-    <Card
-      className={`relative bg-card border-2 transition-all duration-300 overflow-hidden ${
-        isPopular
-          ? "border-primary shadow-[0_0_30px_rgba(191,247,71,0.4)]"
-          : "border-border hover:border-primary/50"
-      } ${isHovered ? "shadow-[0_10px_40px_rgba(0,0,0,0.5)] scale-105" : ""}`}
+    <motion.div
+      whileHover={cardHover}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      <Card
+        className={`relative bg-card border-2 transition-all duration-300 overflow-hidden h-full ${
+          isPopular
+            ? "border-primary shadow-[0_0_30px_rgba(191,247,71,0.4)]"
+            : "border-border hover:border-primary/50"
+        }`}
+      >
       {isPopular && (
         <div className="absolute top-0 right-0 bg-gradient-to-r from-primary to-accent text-primary-foreground px-4 py-1 text-sm font-semibold z-10">
           MOST POPULAR
@@ -103,6 +108,7 @@ export const StorageCard = ({ size, price, dimensions, features, isPopular = fal
           </Button>
         </div>
       </div>
-    </Card>
+      </Card>
+    </motion.div>
   );
 };

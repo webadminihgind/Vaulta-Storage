@@ -5,8 +5,24 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
   try {
+    // Validate environment variables
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error("Missing Supabase environment variables");
+      return NextResponse.json(
+        { error: "Server configuration error", details: "Missing required environment variables" },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const { customer, booking } = body;
+
+    console.log("Booking request received:", {
+      hasCustomer: !!customer,
+      hasBooking: !!booking,
+      customerEmail: customer?.email,
+      bookingSize: booking?.size
+    });
 
     // Validate required fields
     if (!customer?.name || !customer?.email || !customer?.phone) {
@@ -30,15 +46,23 @@ export async function POST(request: NextRequest) {
     let userId: string;
 
     // Check if user exists
-    const { data: existingUser } = await supabaseAdmin
+    console.log("Looking for existing user:", customer.email);
+
+    const { data: existingUser, error: userLookupError } = await supabaseAdmin
       .from("users")
       .select("id")
       .eq("email", customer.email)
-      .single();
+      .maybeSingle();
+
+    if (userLookupError) {
+      console.error("Error looking up user:", userLookupError);
+    }
 
     if (existingUser) {
+      console.log("Found existing user:", existingUser.id);
       userId = existingUser.id;
     } else {
+      console.log("Creating new user");
       // Create new user using service role (bypasses RLS)
       const { data: newUser, error: userError } = await supabaseAdmin
         .from("users")
@@ -65,22 +89,35 @@ export async function POST(request: NextRequest) {
     let planId = booking.plan_id;
 
     if (!planId) {
-      const { data: existingPlan } = await supabaseAdmin
+      console.log("Looking for storage plan:", { size: booking.size, basePrice: booking.basePrice });
+
+      const { data: existingPlan, error: planLookupError } = await supabaseAdmin
         .from("storage_plans")
         .select("id")
         .eq("size", booking.size)
         .eq("price_per_month", booking.basePrice)
-        .single();
+        .maybeSingle();
+
+      if (planLookupError) {
+        console.error("Error looking up storage plan:", planLookupError);
+      }
 
       if (existingPlan) {
+        console.log("Found existing plan:", existingPlan.id);
         planId = existingPlan.id;
       } else {
+        console.log("Creating new storage plan");
+
+        // Extract numeric value from size (e.g., "500 SQ FT" -> 500)
+        const sizeValue = parseInt(booking.size.replace(/[^0-9]/g, "")) || 0;
+
         const { data: newPlan, error: planError } = await supabaseAdmin
           .from("storage_plans")
           .insert({
             name: `Warehouse ${booking.size}`,
             description: `Custom warehouse space - ${booking.dimensions || booking.size}`,
             size: booking.size,
+            size_value: sizeValue,
             price_per_month: booking.basePrice,
             features: ["24/7 Access", "Security Monitoring", "Loading Dock Access"],
             is_active: true,
@@ -180,10 +217,23 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Unexpected error in booking creation:", error);
+
+    // More detailed error logging
+    if (error instanceof Error) {
+      console.error("Error details:", {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+    }
+
     return NextResponse.json(
-      { error: "An unexpected error occurred", details: error instanceof Error ? error.message : "Unknown error" },
+      {
+        error: "An unexpected error occurred",
+        details: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }

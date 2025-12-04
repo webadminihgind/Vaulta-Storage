@@ -2,6 +2,9 @@
 
 import React from "react";
 import { StorageCard } from "./StorageCard";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggerGroup, StaggerItem } from "@/components/animations/StaggerGroup";
+import { fadeInUp } from "@/lib/animations";
 
 export const StorageOptions = () => {
   const storageOptions = [
@@ -59,36 +62,34 @@ export const StorageOptions = () => {
   ];
 
   return (
-    <section className="py-24 bg-gradient-to-b from-background to-secondary/20">
+    <section className="py-24 ">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            Commercial Storage <span className="text-primary">Solutions</span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Flexible warehouse space for businesses of all sizes. From SMEs to large corporations.
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
-            <div className="bg-card px-4 py-2 rounded-lg border border-border">
-              <span className="text-primary font-bold">Base:</span> AED 9/sq ft/mo
-            </div>
-            <div className="bg-card px-4 py-2 rounded-lg border border-border">
-              <span className="text-primary font-bold">Premium Climate:</span> AED 12/sq ft/mo
+        <ScrollReveal animation={fadeInUp}>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+              Commercial Storage <span className="text-primary">Solutions</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Flexible warehouse space for businesses of all sizes. From SMEs to large corporations.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm">
+              <div className="bg-card px-4 py-2 rounded-lg border border-border">
+                <span className="text-primary font-bold">Base:</span> AED 9/sq ft/mo
+              </div>
+              <div className="bg-card px-4 py-2 rounded-lg border border-border">
+                <span className="text-primary font-bold">Premium Climate:</span> AED 12/sq ft/mo
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <StaggerGroup className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" staggerDelay={0.12}>
           {storageOptions.map((option, index) => (
-            <div
-              key={index}
-              className="animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
+            <StaggerItem key={index}>
               <StorageCard {...option} />
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerGroup>
       </div>
     </section>
   );

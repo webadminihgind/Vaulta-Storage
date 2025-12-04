@@ -1,26 +1,34 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { Package, Building2 } from "lucide-react";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggerGroup, StaggerItem } from "@/components/animations/StaggerGroup";
+import { fadeInUp, cardHover } from "@/lib/animations";
 
 export const ComprehensiveSolutions = () => {
   return (
     <section className="py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            Say goodbye to moving stress.
-          </h2>
-          <h3 className="text-3xl sm:text-4xl font-bold text-primary">
-            We Handle Everything
-          </h3>
-        </div>
+        <ScrollReveal animation={fadeInUp}>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+              Say goodbye to moving stress.
+            </h2>
+            <h3 className="text-3xl sm:text-4xl font-bold text-primary">
+              We Handle Everything
+            </h3>
+          </div>
+        </ScrollReveal>
 
         {/* Cards */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <StaggerGroup className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto" staggerDelay={0.2}>
           {/* For Everyday Life */}
-          <Card className="bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 p-8 space-y-6 group hover:shadow-[0_0_40px_rgba(234,179,8,0.2)]">
+          <StaggerItem>
+            <motion.div whileHover={cardHover}>
+              <Card className="bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 p-8 space-y-6 group hover:shadow-[0_0_40px_rgba(234,179,8,0.2)] h-full">
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-bold text-foreground">For everyday life</h3>
               <Package className="w-12 h-12 text-primary group-hover:scale-110 transition-transform" />
@@ -55,10 +63,14 @@ export const ComprehensiveSolutions = () => {
                 EXPLORE ALL OFFERS
               </button>
             </div>
-          </Card>
+              </Card>
+            </motion.div>
+          </StaggerItem>
 
           {/* For Business */}
-          <Card className="bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 p-8 space-y-6 group hover:shadow-[0_0_40px_rgba(234,179,8,0.2)]">
+          <StaggerItem>
+            <motion.div whileHover={cardHover}>
+              <Card className="bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 p-8 space-y-6 group hover:shadow-[0_0_40px_rgba(234,179,8,0.2)] h-full">
             <div className="flex items-center justify-between">
               <h3 className="text-2xl font-bold text-foreground">For business</h3>
               <Building2 className="w-12 h-12 text-primary group-hover:scale-110 transition-transform" />
@@ -93,15 +105,19 @@ export const ComprehensiveSolutions = () => {
                 EXPLORE ALL OFFERS
               </button>
             </div>
-          </Card>
-        </div>
+              </Card>
+            </motion.div>
+          </StaggerItem>
+        </StaggerGroup>
 
         {/* Art Storage Button */}
-        <div className="mt-8 max-w-5xl mx-auto">
-          <button className="w-full px-8 py-4 border-2 border-primary text-foreground rounded-md hover:bg-primary/10 transition-colors font-semibold text-lg">
-            Art storage <span className="text-primary">soon</span>
-          </button>
-        </div>
+        <ScrollReveal delay={0.4}>
+          <div className="mt-8 max-w-5xl mx-auto">
+            <button className="w-full px-8 py-4 border-2 border-primary text-foreground rounded-md hover:bg-primary/10 transition-colors font-semibold text-lg">
+              Art storage <span className="text-primary">soon</span>
+            </button>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

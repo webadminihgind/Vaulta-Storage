@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/Toaster";
@@ -19,13 +20,19 @@ import WhatsAppWidget from "@/components/WhatsAppWidget";
 const queryClient = new QueryClient();
 
 export default function RootClient({ children }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider
         attribute="class"
         defaultTheme="dark"
         enableSystem={false}
-        disableTransitionOnChange
+        disableTransitionOnChange={false}
       >
         <TooltipProvider>
           {/* Notifications */}
@@ -46,19 +53,26 @@ export default function RootClient({ children }) {
           <ScrollToTop />
           <WhatsAppWidget />
 
-          <SmoothScrollWrapper>
-            {/* Page Content with Transition */}
-            <main className="pt-16" data-scroll-section>
-              <PageTransition>
-                {children}
-              </PageTransition>
-            </main>
+          <div
+            className="transition-opacity duration-700 ease-out"
+            style={{
+              opacity: isLoaded ? 1 : 0,
+            }}
+          >
+            <SmoothScrollWrapper>
+              {/* Page Content with Transition */}
+              <main className="pt-16" data-scroll-section>
+                <PageTransition>
+                  {children}
+                </PageTransition>
+              </main>
 
-            {/* Global Footer */}
-            <div data-scroll-section>
-              <Footer />
-            </div>
-          </SmoothScrollWrapper>
+              {/* Global Footer */}
+              <div data-scroll-section>
+                <Footer />
+              </div>
+            </SmoothScrollWrapper>
+          </div>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

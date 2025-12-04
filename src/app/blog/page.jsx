@@ -138,7 +138,7 @@ export default function BlogPage() {
               placeholder="Enter your email"
               className="flex-1 px-4 py-3 rounded-lg bg-background border border-border focus:outline-none focus:border-primary"
             />
-            <button className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity">
+            <button className="px-6 py-3  bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity">
               Subscribe
             </button>
           </div>

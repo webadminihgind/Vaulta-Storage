@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createAdminClient } from "@/utils/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -33,16 +35,31 @@ export async function POST(request: NextRequest) {
     // Check if payment was successful
     if (paymentIntent.status === "succeeded") {
       // Update payment status to completed
-      await supabase
+      const { error: paymentUpdateError } = await supabase
         .from("payments")
         .update({ status: "completed" })
         .eq("id", paymentId);
 
+      if (paymentUpdateError) {
+        console.error("Failed to update payment status:", paymentUpdateError);
+        // Don't fail the request, but log the error
+      }
+
       // Update booking status to confirmed
-      await supabase
+      const { error: bookingUpdateError } = await supabase
         .from("bookings")
         .update({ status: "confirmed" })
         .eq("id", payment.booking_id);
+
+      if (bookingUpdateError) {
+        console.error("Failed to update booking status:", bookingUpdateError);
+        // Don't fail the request, but log the error
+      }
+
+      // Safety check: Verify both updates succeeded
+      if (paymentUpdateError || bookingUpdateError) {
+        console.error("Warning: Some updates failed. Payment ID:", paymentId, "Booking ID:", payment.booking_id);
+      }
 
       return NextResponse.json({
         success: true,
@@ -70,7 +87,7 @@ export async function POST(request: NextRequest) {
         message: "Payment failed or was cancelled.",
       }, { status: 400 });
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Confirm payment error:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },

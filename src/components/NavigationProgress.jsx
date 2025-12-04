@@ -8,10 +8,11 @@ import "nprogress/nprogress.css";
 // Configure NProgress
 NProgress.configure({
   showSpinner: false,
-  trickleSpeed: 200,
+  trickleSpeed: 100,
   minimum: 0.08,
-  easing: "ease",
-  speed: 400,
+  easing: "ease-out",
+  speed: 500,
+  trickle: true,
 });
 
 function NavigationProgressInner() {

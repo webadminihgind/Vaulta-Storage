@@ -146,7 +146,7 @@ export default function CompanyPage() {
             </div>
             <a
               href="/contact"
-              className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity"
+              className="inline-block px-6 py-3  bg-gradient-to-r from-primary to-accent text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-opacity"
             >
               Contact Us
             </a>

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { createAdminClient } from "@/utils/supabase/server";
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: false, status: session.payment_status });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Verify payment error:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },
@@ -66,7 +68,7 @@ export async function GET(request: NextRequest) {
     if (!payment) return NextResponse.json({ error: "Payment not found" }, { status: 404 });
 
     return NextResponse.json({ success: true, payment });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Get payment error:", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Unknown error" },

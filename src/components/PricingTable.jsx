@@ -1,10 +1,14 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/navigation";
 import { Check } from "lucide-react";
+import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { StaggerGroup, StaggerItem } from "@/components/animations/StaggerGroup";
+import { fadeInUp, cardHover, buttonHover } from "@/lib/animations";
 
 export const PricingTable = () => {
   const router = useRouter();
@@ -61,56 +65,67 @@ export const PricingTable = () => {
   return (
     <section className="py-24 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            Transparent <span className="text-primary">Pricing</span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Simple, straightforward pricing. Choose base storage or upgrade to premium climate control.
-          </p>
-        </div>
+        <ScrollReveal animation={fadeInUp}>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+              Transparent <span className="text-primary">Pricing</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Simple, straightforward pricing. Choose base storage or upgrade to premium climate control.
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Feature Comparison */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16 max-w-5xl mx-auto">
-          <Card className="p-8 border-2 border-border">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold mb-2">Base Storage</h3>
-              <div className="text-4xl font-bold text-primary mb-2">AED 9</div>
-              <div className="text-muted-foreground">per sq ft / month</div>
-            </div>
-            <ul className="space-y-3">
-              {baseFeatures.map((feature, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
+        <StaggerGroup className="grid md:grid-cols-2 gap-8 mb-16 max-w-5xl mx-auto" staggerDelay={0.2}>
+          <StaggerItem>
+            <motion.div whileHover={cardHover}>
+              <Card className="p-8 border-2 border-border h-full">
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold mb-2">Base Storage</h3>
+                  <div className="text-4xl font-bold text-primary mb-2">AED 9</div>
+                  <div className="text-muted-foreground">per sq ft / month</div>
+                </div>
+                <ul className="space-y-3">
+                  {baseFeatures.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </motion.div>
+          </StaggerItem>
 
-          <Card className="p-8 border-2 border-primary bg-gradient-to-br from-primary/5 to-transparent">
-            <div className="mb-6">
-              <div className="inline-block bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold mb-3">
-                PREMIUM
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Climate Controlled</h3>
-              <div className="text-4xl font-bold text-primary mb-2">AED 12</div>
-              <div className="text-muted-foreground">per sq ft / month</div>
-            </div>
-            <ul className="space-y-3">
-              {premiumFeatures.map((feature, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                  <span className={idx === 0 ? "font-semibold" : ""}>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </div>
+          <StaggerItem>
+            <motion.div whileHover={cardHover}>
+              <Card className="p-8 border-2 border-primary bg-gradient-to-br from-primary/5 to-transparent h-full">
+                <div className="mb-6">
+                  <div className="inline-block bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold mb-3">
+                    PREMIUM
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2">Climate Controlled</h3>
+                  <div className="text-4xl font-bold text-primary mb-2">AED 12</div>
+                  <div className="text-muted-foreground">per sq ft / month</div>
+                </div>
+                <ul className="space-y-3">
+                  {premiumFeatures.map((feature, idx) => (
+                    <li key={idx} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span className={idx === 0 ? "font-semibold" : ""}>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            </motion.div>
+          </StaggerItem>
+        </StaggerGroup>
 
         {/* Pricing Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full max-w-6xl mx-auto">
+        <ScrollReveal delay={0.2}>
+          <div className="overflow-x-auto">
+            <table className="w-full max-w-6xl mx-auto">
             <thead>
               <tr className="border-b-2 border-primary">
                 <th className="text-left py-4 px-4 font-bold">Unit Size</th>
@@ -166,21 +181,26 @@ export const PricingTable = () => {
                 </tr>
               ))}
             </tbody>
-          </table>
-        </div>
+            </table>
+          </div>
+        </ScrollReveal>
 
-        <div className="text-center mt-12">
-          <p className="text-sm text-muted-foreground mb-6">
-            * All prices in AED. Minimum lease term applies. Contact us for custom requirements.
-          </p>
-          <Button
-            size="lg"
-            className="bg-primary text-primary-foreground hover:bg-primary/90"
-            onClick={() => router.push("/contact")}
-          >
-            Request Custom Quote
-          </Button>
-        </div>
+        <ScrollReveal delay={0.4}>
+          <div className="text-center mt-12">
+            <p className="text-sm text-muted-foreground mb-6">
+              * All prices in AED. Minimum lease term applies. Contact us for custom requirements.
+            </p>
+            <motion.div className="inline-block" whileHover={buttonHover}>
+              <Button
+                size="lg"
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={() => router.push("/contact")}
+              >
+                Request Custom Quote
+              </Button>
+            </motion.div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
